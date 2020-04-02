@@ -8,9 +8,8 @@
 #include "HLW8012.h"
 #include "ESP8266mDNS.h" 
 
-#define MAX_TOPICS 7
-#define MAX_TOPIC_LEN 42
-#define BROKER_URL_LEN 20
+#define MAX_TOPIC_LEN 64
+#define BROKER_URL_LEN 42
 #define SSID_LEN 32
 #define PSWD_LEN 20
 #define BUFF_LEN 384
@@ -55,8 +54,17 @@
 
 #define ACTIVATION_TOPIC ACTIVATION_CODE "/activation" 
 #define WIFI_TOPIC ACTIVATION_CODE "/wifi" 
-#define TOPICS_TOPIC CLIENT_ID "/topics" 
+#define TOPICS_TOPIC CLIENT_ID "/topic" 
 
+// const char* ssid = "WISLAB";
+// const char* pswd = "qkmf99los";
+// const char* mqttServer = "192.168.1.188";
+// const uint16_t port = 1883;
+
+//const char* ssid = "Blesk";
+//const char* pswd = "FritzBox2";
+//const char* mqttServer = "147.229.147.11";
+//const uint16_t port = 8883;
 
 char mqttUser[20] = {0};
 char mqttPswd[20] = {0};
@@ -71,7 +79,7 @@ unsigned long lastMsg = 0;
 
 StaticJsonDocument<BUFF_LEN> doc;
 char buffer[BUFF_LEN];
-char topics[MAX_TOPICS][MAX_TOPIC_LEN];
+char dev_topic[MAX_TOPIC_LEN];
 uint8_t topicsNum = 0;
 uint8_t state = EMPTY_STATE;
 
@@ -102,36 +110,31 @@ void createCommandHeader(char* command_t, char *value){
   doc["value"] = value;
 }
 
-void reportValues(){
+void createReport(char* report_type, char* report_name, float value, char* unit){
   doc.clear();
   doc["type"] = "report";
   doc["priority_level"] = 1;
-  doc["report_type"] = "periodic_report";
+  doc["report_type"] = report_type;
   doc["timestamp"] = (uint32_t) time(nullptr);
+  doc["report_name"] = report_name;
+  JsonObject val = doc.createNestedObject("report");
+  val["unit"] = unit;
+  val["value"] = value;
+}
 
-  for (uint8_t i = 0; i < topicsNum; i++)
-  {
-    if(strstr(topics[i], "/consumption") != NULL){
-      doc["report_name"] = "consumption";
-      doc["report"] = hlw8012.getActivePower();
-      serializeJson(doc, buffer);
-      client.publish(topics[i], buffer);
-    }
+void reportValues(){
 
-    if(strstr(topics[i], "/voltage") != NULL){
-      doc["report_name"] = "voltage";
-      doc["report"] = hlw8012.getVoltage();
-      serializeJson(doc, buffer);
-      client.publish(topics[i], buffer);
-    }
+  createReport((char*) "periodic_report", (char*) "consumption", hlw8012.getActivePower(), (char*) "W");
+  serializeJson(doc, buffer);
+  client.publish(dev_topic, buffer);
 
-    if(strstr(topics[i], "/current") != NULL){
-      doc["report_name"] = "current";
-      doc["report"] = hlw8012.getCurrent();
-      serializeJson(doc, buffer);
-      client.publish(topics[i], buffer);
-    }
-  }
+  createReport((char*) "periodic_report", (char*) "voltage", hlw8012.getVoltage(), (char*) "V");
+  serializeJson(doc, buffer);
+  client.publish(dev_topic, buffer);
+
+  createReport((char*) "periodic_report", (char*) "current", hlw8012.getCurrent(), (char*) "A");
+  serializeJson(doc, buffer);
+  client.publish(dev_topic, buffer);
 }
 
 void callback(char* topic, byte* payload, unsigned int length){
@@ -140,10 +143,10 @@ void callback(char* topic, byte* payload, unsigned int length){
   DeserializationError error = deserializeJson(doc, (char *) payload);
   if(!error){
     if (doc["type"] == "command"){
-      if(strstr(topic, "/power") != NULL && doc["command_type"] == "set"){
+      if(doc["command_type"] == "set"){
         setPower(doc["value"]);
       }
-      if (strstr(topic, "/remove") != NULL && doc["command_type"] == "remove"){
+      if (doc["command_type"] == "remove"){
         client.disconnect();
         SPIFFS.format();
         delay(1000);
@@ -167,28 +170,18 @@ void reconnect(bool isAnonyme){
   }
 }
 
-void loadTopics(){
+void loadTopic(){
   File f = SPIFFS.open(TOPICS_FILES, "r");
-  uint8_t i = 0;
-  while (f.available())
-  {
-    buffer[0] = '\0';
-    uint16_t l = f.readBytesUntil('\n', buffer, sizeof(buffer));
-    buffer[l] = '\0';
-    strcpy(topics[i], buffer);
-    i++;
-  }
-  topicsNum = i;
+  uint16_t l = f.readBytesUntil('\n', buffer, sizeof(buffer));
+  buffer[l] = '\0';
+  strcpy(dev_topic, buffer);
   f.close();
 }
 
-void storeTopics(){
- File f = SPIFFS.open(TOPICS_FILES, "w+");
-  for (uint8_t i = 0; i < topicsNum; i++)
-  {
-    f.print(topics[i]);
-    f.print('\n');
-  }
+void storeTopic(){
+  File f = SPIFFS.open(TOPICS_FILES, "w+");
+  f.print(dev_topic);
+  f.print('\n');
   f.close();
 }
 
@@ -255,17 +248,13 @@ void firstCallback(char* topic, byte* payload, unsigned int length){
         state = JOINT_STATE;
         lastMsg = 0;
       }
-      else if(doc["type"] == "report" && doc["report_name"] == "topics"){
+      else if(doc["type"] == "report" && doc["report_name"] == "topic"){
         client.unsubscribe(TOPICS_TOPIC);
+        //state = INITIALIZE_STATE;
         client.setCallback(callback);
-        uint8_t i = 0;
-        JsonArray arr = doc["value"].as<JsonArray>();
-        for (JsonVariant value : arr){
-          strcpy(topics[i], value.as<char*>());
-          i++;
-        }
-        topicsNum = i;
-        storeTopics();
+
+        strcpy(dev_topic, doc["value"]);
+        storeTopic();
         client.disconnect();
         ESP.restart();
       }
@@ -415,7 +404,7 @@ void setup() {
     state = START_STATE;
   } else {
     loadCredentials(mqttUser, mqttPswd, LOGIN_FILES);
-    loadTopics();
+    loadTopic();
     loadCert();
     espClient.setFingerprint(cert);
     state = INITIALIZE_STATE;
@@ -429,8 +418,11 @@ void setup() {
     hlw8012.setPowerMultiplier(HJL01_POWER_RATIO);
     attachInterrupt(digitalPinToInterrupt(CF_PIN), hlw8012_cf_interrupt, CHANGE);
     attachInterrupt(digitalPinToInterrupt(CF1_PIN), hlw8012_cf1_interrupt, CHANGE);
+    //hlw8012.setResistors(CURRENT_RESISTOR, VOLTAGE_RESISTOR_UPSTREAM, VOLTAGE_RESISTOR_DOWNSTREAM);
   }
 }
+
+//unsigned long lastSwitch = 0;
 
 void loop() {
   switch (state)
@@ -472,17 +464,14 @@ void loop() {
       break;
     case TOPIC_STATE:
       if (millis() - lastMsg > 10000){
-        createCommandHeader((char *) "topics", (char *) "GET_DEVICE_TOPICS");
+        createCommandHeader((char *) "topic", (char *) "GET_DEVICE_TOPIC");
         serializeJson(doc, buffer);
         client.publish(TOPICS_TOPIC, buffer);
         lastMsg = millis();
       }
       break;
     case INITIALIZE_STATE:
-      for (uint8_t i = 0; i < topicsNum; i++)
-      {
-        client.subscribe(topics[i]);
-      }
+      client.subscribe(dev_topic);
       state = INITIALIZED_STATE;
       break;
     case INITIALIZED_STATE:
@@ -495,4 +484,6 @@ void loop() {
       break;
     }
     client.loop();
+    //hlw8012.toggleMode();
+    //MDNS.update();
 }
