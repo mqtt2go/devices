@@ -3,7 +3,7 @@ Alternative firmware for ESP8266 based devices with MQTT2GO protocol compatibili
 
 ## Supported devices
 
-* Shelly Plug S
+* [Shelly Plug S](./Shelly%20Plug%20S)
 
 ## Prerequisites
 This alternative firmware has been developed in Visual Studio Code utilizing Platform IO plugin. For full functionality also the Arduino IDE is required to be installed by the time of the firmware compilation.
@@ -12,4 +12,5 @@ All required dependencies should be installed automatically via the Platform IO 
 The basic functionality is ensured by libraries:
 * PubSubClient [link](https://github.com/knolleary/pubsubclient),
 * ArduinoJson [link](https://github.com/bblanchon/ArduinoJson).
+
 These libraries are used in each firmware mutation. Individual devices then require additional libraries needed for their functionality.
