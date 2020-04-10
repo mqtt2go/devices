@@ -5,7 +5,7 @@
 2. Unscrew the screw situated on the backside of the Shelly Plug S, see <a href="#fig1">Fig. 1</a>.
 
 <p align="center" >
-	<img src="back.svg" alt="Shelly Plug S - back.">
+	<img src="back.svg" alt="Shelly Plug S - back." height="300">
 </p>
 <p align="center" >
 	<a name="fig1"></a><em><strong>Fig. 1:</strong>Shelly Plug S - back view.</em>
@@ -14,7 +14,7 @@
 3. Take off the power socket lid, see <a href="#fig2">Fig. 2</a>.
 
 <p align="center" >
-	<img src="front.svg" alt="Shelly Plug S - front.">
+	<img src="front.svg" alt="Shelly Plug S - front." height="300">
 </p>
 <p align="center" >
 	<a name="fig2"></a><em><strong>Fig. 2:</strong>Shelly Plug S - front view.</em>
@@ -32,7 +32,7 @@
 5. In this phase, the device is ready to be flashed with the new firmware. After the Platform IO: Upload button press, see <a href="#fig4">Fig. 4</a>, the source code will be compiled and uploaded to the device.
 
 <p align="center" >
-	<img src="platformio.svg" alt="VS Code Upload.">
+	<img src="platformio.svg" alt="VS Code Upload." height="48">
 </p>
 <p align="center" >
 	<a name="fig4"></a><em><strong>Fig. 4:</strong>Platform IO - Upload.</em>
