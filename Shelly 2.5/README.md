@@ -1,4 +1,4 @@
-# Shelly 2.5
+# Shelly 2.5 Blinds Controller
 
 ## Preparation/Flashing procedure
 

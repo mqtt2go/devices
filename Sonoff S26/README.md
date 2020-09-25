@@ -1,4 +1,4 @@
-# Sonoff S2 Smart Socket
+# Sonoff S26 Smart Socket
 
 ## Preparation/Flashing procedure
 
