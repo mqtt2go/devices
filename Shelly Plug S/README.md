@@ -23,7 +23,7 @@
 3. Connect the USB <-> UART converter to the socket PCB, according to <a href="#fig3">Fig. 3</a>. The GPIO 0 pin has to be grounded while applying the power to enter programming mode.
 
 <p align="center" >
-	<img src="Shelly_plug_open.svg" alt="Shelly Plug S - PCB." height="300">
+	<img src="Shelly_plug_open.svg" alt="Shelly Plug S - PCB." height="500">
 </p>
 <p align="center" >
 	<a name="fig3"></a><em><strong>Fig. 3:</strong>Shelly Plug S - PCB.</em>
