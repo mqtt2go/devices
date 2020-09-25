@@ -1,23 +1,23 @@
-# Sonoff B1 smart bulb
+# Sonoff POW R2
 
 ## Preparation/Flashing procedure
 
-1. Remove the lid of the Sonoff B1 smart bulb, see <a href="#fig1">Fig. 1</a>.
+1. Remove the cover of the Sonoff POW R2 power meter, see <a href="#fig1">Fig. 1</a>.
 
 <p align="center" >
-	<img src="B1.svg" alt="Sonoff B1 smart bulb" height="400">
+	<img src="POWR2.svg" alt="Sonoff POW R2" height="400">
 </p>
 <p align="center" >
-	<a name="fig1"></a><em><strong>Fig. 1:</strong>Sonoff B1 smart bulb.</em>
+	<a name="fig1"></a><em><strong>Fig. 1:</strong>Sonoff POW R2.</em>
 </p>
 
-2. Solder wires to the PCB  and connect the USB <-> UART converter to the bulb PCB, according to <a href="#fig2">Fig. 2</a>. The GPIO 0 pin has to be grounded while applying the power to enter programming mode.
+2. Connect the USB <-> UART converter to the power meter PCB, according to <a href="#fig2">Fig. 2</a>. The GPIO 0 pin has to be grounded while applying the power to enter programming mode. To do so, press the button while plugging the device.
 
 <p align="center" >
-	<img src="B1_open.svg" alt="Sonoff B1 - PCB" height="500">
+	<img src="POWR2_open.svg" alt="Sonoff POW R2 - PCB" height="500">
 </p>
 <p align="center" >
-	<a name="fig2"></a><em><strong>Fig. 2:</strong>Sonoff B1 - PCB.</em>
+	<a name="fig2"></a><em><strong>Fig. 2:</strong>Sonoff POW R2 - PCB.</em>
 </p>
 
 3. In this phase, the device is ready to be flashed with the new firmware. After the Platform IO: Upload button press, see <a href="#fig3">Fig. 3</a>, the source code will be compiled and uploaded to the device.
@@ -35,8 +35,7 @@
 
 * PubSubClient [link](https://github.com/knolleary/pubsubclient),
 * ArduinoJson [link](https://github.com/bblanchon/ArduinoJson),
-* MY92XX [link](https://github.com/xoseperez/my92xx),
-* Arduino ColorConverter [link] (https://github.com/luisllamasbinaburo/Arduino-ColorConverter).
+* CSE7766 [link](https://github.com/ingeniuske/CSE7766).
 
 
 ## Configurable Parameters
