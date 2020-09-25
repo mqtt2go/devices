@@ -2,7 +2,7 @@
 
 ## Preparation/Flashing procedure
 
-1. Remove the cover of the Sonoff TH 16 ,ulti sensor, see <a href="#fig1">Fig. 1</a>.
+1. Remove the cover of the Sonoff TH 16 multi sensor, see <a href="#fig1">Fig. 1</a>.
 
 <p align="center" >
 	<img src="TH16.svg" alt="Sonoff TH16" height="400">
