@@ -5,7 +5,7 @@
 1. Unscrew the screw situated on the backside of the Shelly Plug S, see <a href="#fig1">Fig. 1</a>.
 
 <p align="center" >
-	<img src="back.svg" alt="Shelly Plug S - back." height="300">
+	<img src="Shelly_plug_back.svg" alt="Shelly Plug S - back." height="300">
 </p>
 <p align="center" >
 	<a name="fig1"></a><em><strong>Fig. 1:</strong>Shelly Plug S - back view.</em>
@@ -14,7 +14,7 @@
 2. Take off the power socket lid, see <a href="#fig2">Fig. 2</a>.
 
 <p align="center" >
-	<img src="front.svg" alt="Shelly Plug S - front." height="300">
+	<img src="Shelly_plug.svg" alt="Shelly Plug S - front." height="300">
 </p>
 <p align="center" >
 	<a name="fig2"></a><em><strong>Fig. 2:</strong>Shelly Plug S - front view.</em>
@@ -23,7 +23,7 @@
 3. Connect the USB <-> UART converter to the socket PCB, according to <a href="#fig3">Fig. 3</a>. The GPIO 0 pin has to be grounded while applying the power to enter programming mode.
 
 <p align="center" >
-	<img src="pcb.svg" alt="Shelly Plug S - PCB.">
+	<img src="Shelly_plug_open.svg" alt="Shelly Plug S - PCB." height="300">
 </p>
 <p align="center" >
 	<a name="fig3"></a><em><strong>Fig. 3:</strong>Shelly Plug S - PCB.</em>
