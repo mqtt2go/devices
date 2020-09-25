@@ -4,6 +4,11 @@ Alternative firmware for ESP8266 based devices with MQTT2GO protocol compatibili
 ## Supported devices
 
 * [Shelly Plug S](./Shelly%20Plug%20S)
+* [Shelly 2.5](./Shelly%202.5)
+* [Shelly Plug S](./Sonoff%B1)
+* [Shelly Plug S](./Sonoff%20POW%202)
+* [Shelly Plug S](./Sonoff%20S26)
+* [Shelly Plug S](./Sonoff%20TH16)
 
 ## Prerequisites
 This alternative firmware has been developed in [Visual Studio Code](https://code.visualstudio.com/) utilizing [Platform IO](https://platformio.org/) plugin. For full functionality also the [Arduino IDE](https://www.arduino.cc/en/main/software) is required to be installed by the time of the firmware compilation.
